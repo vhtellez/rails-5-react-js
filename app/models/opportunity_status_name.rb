@@ -1,0 +1,2 @@
+class OpportunityStatusName < ApplicationRecord
+end
