@@ -11,9 +11,6 @@ class NewProspectForm extends React.Component {
     this.newProspectSubmit = this.newProspectSubmit.bind(this)
     this.handleNameChange = this.handleNameChange.bind(this)
     this.handleAddressChange = this.handleAddressChange.bind(this)
-    this.renderFieldErrors = this.renderFieldErrors.bind(this)
-    this.renderProspectNameField = this.renderProspectNameField.bind(this)
-    this.renderProspectAddressField = this.renderProspectAddressField.bind(this)
   }
 
   resetState(){
@@ -72,11 +69,8 @@ class NewProspectForm extends React.Component {
 
 
   renderProspectNameField(){
-
     var formGroupClass = this.state.formErrors["name"] ? "form-group has-error" : "form-group"
-
     return(
-
       <div className='row'>
         <div className='col-sm-4'>
           <div className= {formGroupClass}>
@@ -96,7 +90,7 @@ class NewProspectForm extends React.Component {
   }
 
   renderProspectAddressField(){
-    var formGroupClass = this.state.formErrors["addess"] ? "form-group has-error" : "form-group"
+    var formGroupClass = this.state.formErrors["address"] ? "form-group has-error" : "form-group"
 
     return(
       <div className='row'>
@@ -131,11 +125,6 @@ class NewProspectForm extends React.Component {
             </div>
           </div>
         </form>
-        <div id="modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content"></div>
-          </div>
-        </div>
       </div>
 
     );

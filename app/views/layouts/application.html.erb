@@ -12,6 +12,7 @@
     <% if current_user %>
       <%= "Logged in as #{current_user.user_name}" %> |
       <%= link_to 'Prospects', { controller: 'prospects', action: 'index' } %> |
+      <%= link_to 'Opportunities', { controller: 'opportunities', action: 'index' } %> |
       <%= link_to 'Home', root_path %> |
       <%= link_to 'Log Out', logout_path, method: :delete %>
     <% else %>

@@ -33,15 +33,17 @@ ActiveRecord::Schema.define(version: 20180626194225) do
   end
 
   create_table "opportunity_statuses", force: :cascade do |t|
-    t.integer "status_from_id", null: false
-    t.integer "status_to_id", null: false
+    t.integer "status_from_id"
+    t.integer "status_to_id"
     t.date "changed_date", null: false
-    t.integer "user_id_id", null: false
+    t.integer "user_id"
+    t.integer "opportunity_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["opportunity_id"], name: "index_opportunity_statuses_on_opportunity_id"
     t.index ["status_from_id"], name: "index_opportunity_statuses_on_status_from_id"
     t.index ["status_to_id"], name: "index_opportunity_statuses_on_status_to_id"
-    t.index ["user_id_id"], name: "index_opportunity_statuses_on_user_id_id"
+    t.index ["user_id"], name: "index_opportunity_statuses_on_user_id"
   end
 
   create_table "projects", force: :cascade do |t|
