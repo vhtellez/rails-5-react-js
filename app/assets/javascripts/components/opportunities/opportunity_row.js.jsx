@@ -11,6 +11,7 @@ class OpportunityRow extends React.Component {
       prospect_id: this.props.prospect_id,
       current_status_name: this.props.current_status_name,
       current_status_id: this.props.current_status_id,
+      opportunity_statuses_log: this.props.opportunity_statuses_log,
       edit: false,
       formErrors: {}
     };
@@ -70,9 +71,11 @@ class OpportunityRow extends React.Component {
   }
 
   handleCurrentStatusChange(e){
+    last_status_id = this.state.current_status_id
     this.setState( {
       current_status_id: e.target.value,
       current_status_name: e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text
+      //TODO change this.state.opportunity_statuses_log if (last_status_id != e.target.value)
     } );
   }
 
@@ -160,64 +163,76 @@ class OpportunityRow extends React.Component {
   renderOpportunityProspectEditFields(){
     var formGroupClass = this.state.formErrors["prospect"] ? "form-group has-error" : "form-group"
     return(
-          <div className= {formGroupClass}>
-            <select
-              name="opportunity[prospect_id]"
-              value={this.state.prospect_id}
-              onChange={this.handleProspectChange}
-              className="string form-control">
-              {this.props.prospects.map( prospect =>
-                <option key={prospect.id} value={prospect.id} selected={this.state.prospect_id == prospect.id}>{prospect.name}</option>
-              )};
-            </select>
-            {this.renderFieldErrors("prospect")}
-          </div>
+      <div className= {formGroupClass}>
+        <select
+          name="opportunity[prospect_id]"
+          value={this.state.prospect_id}
+          onChange={this.handleProspectChange}
+          className="string form-control">
+          {this.props.prospects.map( prospect =>
+            <option key={prospect.id} value={prospect.id} selected={this.state.prospect_id == prospect.id}>{prospect.name}</option>
+          )};
+        </select>
+        {this.renderFieldErrors("prospect")}
+      </div>
     );
   }
 
   renderOpportunityCurrentStatusFields(){
     var formGroupClass = this.state.formErrors["current_status"] ? "form-group has-error" : "form-group"
     return(
-          <div className= {formGroupClass}>
-            <select
-              name="opportunity[current_status_id]"
-              value={this.state.current_status_id}
-              onChange={this.handleCurrentStatusChange}
-              className="string form-control">
-              {this.props.opportunity_status_names.map( name =>
-                <option
-                  key={name.id}
-                  value={name.id}
-                  selected={this.state.current_status_id == name.id}
-                  >{name.name}
-                </option>
-              )};
-            </select>
-            {this.renderFieldErrors("current_status")}
-          </div>
+      <div className= {formGroupClass}>
+        <select
+          name="opportunity[current_status_id]"
+          value={this.state.current_status_id}
+          onChange={this.handleCurrentStatusChange}
+          className="string form-control">
+          {this.props.opportunity_status_names.map( name =>
+            <option
+              key={name.id}
+              value={name.id}
+              selected={this.state.current_status_id == name.id}
+              >{name.name}
+            </option>
+          )};
+        </select>
+        {this.renderFieldErrors("current_status")}
+      </div>
     );
   }
 
   renderOpportunityUserFields(){
     var formGroupClass = this.state.formErrors["user"] ? "form-group has-error" : "form-group"
     return(
-          <div className= {formGroupClass}>
-            <select
-              name="opportunity[user_id]"
-              value={this.state.user_id}
-              onChange={this.handleUserChange}
-              className="string form-control">
-              {this.props.users.map( user =>
-                <option
-                  key={user.id}
-                  value={user.id}
-                  selected={this.state.user_id == user.id}
-                  >{user.user_name}
-                </option>
-              )};
-            </select>
-            {this.renderFieldErrors("current_status")}
+      <div className= {formGroupClass}>
+        <select
+          name="opportunity[user_id]"
+          value={this.state.user_id}
+          onChange={this.handleUserChange}
+          className="string form-control">
+          {this.props.users.map( user =>
+            <option
+              key={user.id}
+              value={user.id}
+              selected={this.state.user_id == user.id}
+              >{user.user_name}
+            </option>
+          )};
+        </select>
+        {this.renderFieldErrors("current_status")}
+      </div>
+    );
+  }
+
+  renderStatusHistory(){
+    return(
+      <div className="col-sm-10">
+        {this.state.opportunity_statuses_log.map( (status,i) =>
+          <div >
+            [{i+1}] {status.changed_date} from:"{status.status_from_name}" to: "{status.status_to_name}" by: {status.user_name}
           </div>
+        )}
+      </div>
     );
   }
 
@@ -226,13 +241,13 @@ class OpportunityRow extends React.Component {
     if(this.state.edit == false){
       return(
         <div className="row" style={{marginTop: "20px"}}>
-          <div className="col-sm-2">
+          <div className="col-sm-1">
             {this.state.name}
           </div>
-          <div className="col-sm-2">
+          <div className="col-sm-1">
             {this.state.monetary_value}
           </div>
-          <div className="col-sm-2">
+          <div className="col-sm-1">
             {this.state.user_name}
           </div>
           <div className="col-sm-2">
@@ -241,14 +256,20 @@ class OpportunityRow extends React.Component {
           <div className="col-sm-2">
             {this.state.current_status_name}
           </div>
-          <div className="col-sm-2">
-            <button className='btn btn-sm btn-primary' onClick={this.editOpportunity}>
+          <div className="col-sm-4" >
+            <button className='btn btn-sm btn-primary'  data-toggle="collapse" data-target={"#history_"+this.state.id}>
+              Status History
+            </button>
+            <button className='btn btn-sm btn-primary' style={{marginLeft:'10px'}} onClick={this.editOpportunity}>
               Edit
             </button>
             <button className='btn btn-sm btn-danger' style={{marginLeft:'10px'}}
               onClick={(e) => { if (window.confirm('Are you sure you wish to delete this opportunity?')) this.deleteOpportunity(e) } }>
               Delete
             </button>
+          </div>
+          <div className="col-sm-12 collapse" id={"history_"+this.state.id}>
+            {this.renderStatusHistory()}
           </div>
         </div>
       );
@@ -257,13 +278,13 @@ class OpportunityRow extends React.Component {
       return(
         <div className="row" style={{marginTop: "20px"}}>
           <form style={{marginTop: "30px"}} onSubmit={this.updateOpportunity}>
-            <div className="col-sm-2">
+            <div className="col-sm-1">
               {this.renderOpportunityNameEditFields()}
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-1">
               {this.renderOpportunityMonetaryValueEditFields()}
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-1">
               {this.renderOpportunityUserFields()}
             </div>
             <div className="col-sm-2">
@@ -272,7 +293,7 @@ class OpportunityRow extends React.Component {
             <div className="col-sm-2">
               {this.renderOpportunityCurrentStatusFields()}
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-4">
               <input type="submit" value="Save" className='btn btn-success' />
               <button className='btn btn-sm btn-primary' style={{marginLeft:'10px'}} onClick={this.cancelEdit}>
                 Cancel

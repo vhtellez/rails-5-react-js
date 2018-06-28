@@ -5,6 +5,6 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-opportunity_status_names = OpportunityStatusName.create([{ name: 'New Lead' }, { name: 'Qualified' }, { name: 'Demo Schedule' }, { name: 'Quotation Sent' }, { name: 'Closed' }])
+opportunity_status_names = OpportunityStatusName.create([{ name: 'New Lead' }, { name: 'Qualified' }, { name: 'Demo Schedule' }, { name: 'Quotation Sent' }, { name: 'Closed' },{ name: 'New Lead2' },{ name: 'New Lead 3' },{ name: 'New Lead 4' }])
 users = User.create([{user_name: 'vhtellez', password: 'password', password_confirmation: "password"}, {user_name: 'rzhou', password: 'password', password_confirmation: "password"}, {user_name: 'test_user', password: 'password', password_confirmation: "password"}])
 prospects = Prospect.create([{name: 'Prospect 1', address: 'Address 1', created_by_user_id: 1 }, {name: 'Prospect 2', address: 'Address 2', created_by_user_id: 1 }])

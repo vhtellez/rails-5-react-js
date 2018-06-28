@@ -19,6 +19,7 @@ class OpportunityTable extends React.Component {
             parentDeleteOpportunity={this.props.parentDeleteOpportunity}
             prospects={this.props.prospects}
             opportunity_status_names={this.props.opportunity_status_names}
+            opportunity_statuses_log={opportunity.opportunity_statuses_log}
             users={this.props.users}/>
           );
         }.bind(this))
@@ -29,13 +30,13 @@ class OpportunityTable extends React.Component {
       return(
         <div>
           <div className="row" style={{marginTop: "50px"}}>
-            <div className="col-sm-2" style={{fontWeight: "bold"}}>
+            <div className="col-sm-1" style={{fontWeight: "bold"}}>
               Name
             </div>
-            <div className="col-sm-2" style={{fontWeight: "bold"}}>
+            <div className="col-sm-1" style={{fontWeight: "bold"}}>
               Monetary Value
             </div>
-            <div className="col-sm-2" style={{fontWeight: "bold"}}>
+            <div className="col-sm-1" style={{fontWeight: "bold"}}>
               User
             </div>
             <div className="col-sm-2" style={{fontWeight: "bold"}}>

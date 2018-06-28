@@ -14,12 +14,14 @@ class Opportunity < ApplicationRecord
   # information about opportunities.
   #
   before_update do |opportunity|
-    opportunity_status = self.opportunity_statuses.build
-    opportunity_status.status_from = OpportunityStatusName.find( self.current_status_id_was ) #last value?
-    opportunity_status.status_to = self.current_status
-    opportunity_status.changed_date = Date.today
-    opportunity_status.user = self.session_user #change or the session user
-    opportunity_status.save
+    if self.current_status_id_was != self.current_status_id
+      opportunity_status = self.opportunity_statuses.build
+      opportunity_status.status_from = OpportunityStatusName.find( self.current_status_id_was ) #last value?
+      opportunity_status.status_to = self.current_status
+      opportunity_status.changed_date = Date.today
+      opportunity_status.user = self.session_user #change or the session user
+      opportunity_status.save
+    end
   end
 
   # Log historic status in order to mantain
@@ -36,7 +38,7 @@ class Opportunity < ApplicationRecord
 
   def as_json(options={})
     super(
-      methods: [:user_name, :prospect_name, :current_status_name ]
+      methods: [:user_name, :prospect_name, :current_status_name, :opportunity_statuses_log ]
     )
   end
 
@@ -50,6 +52,10 @@ class Opportunity < ApplicationRecord
 
   def current_status_name
     self.current_status.name
+  end
+
+  def opportunity_statuses_log
+    self.opportunity_statuses
   end
 
 end
